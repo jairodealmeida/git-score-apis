@@ -1,5 +1,5 @@
 import { Document, Model, model, Schema } from 'mongoose';
-import { IFileTypeConfig } from './FileTypeConfig';
+import { IFileTypeConfig } from './file-type-config';
 
 interface IScoreConfig extends Document {
   name: string;
@@ -13,7 +13,6 @@ const ScoreConfigSchema: Schema = new Schema({
   fileTypeConfigs: [{ type: Schema.Types.ObjectId, ref: 'FileTypeConfig' }],
 });
 
-export const ScoreConfigModel: Model<IScoreConfig> = model<IScoreConfig>(
-    'ScoreConfig',
-    ScoreConfigSchema,
-  );
+
+const ScoreConfig = model<IScoreConfig>('ScoreConfig', ScoreConfigSchema);
+export default ScoreConfig;
