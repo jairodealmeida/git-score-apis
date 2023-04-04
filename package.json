@@ -1,0 +1,27 @@
+{
+  "name": "git-score-apis",
+  "version": "1.0.0",
+  "description": "Projeto para definição de score para time dev",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jairodealmeida/git-score-apis.git"
+  },
+  "keywords": [
+    "git",
+    "git-status",
+    "score"
+  ],
+  "author": "jairodealmeida@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jairodealmeida/git-score-apis/issues"
+  },
+  "homepage": "https://github.com/jairodealmeida/git-score-apis#readme",
+  "dependencies": {
+    "mongoose": "^7.0.3"
+  }
+}
