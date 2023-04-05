@@ -1,13 +1,19 @@
-/**
- * errorHandler.ts: middleware responsável por capturar erros lançados pela 
- * aplicação e formatá-los adequadamente antes de enviá-los como resposta para o cliente.
- */
 import { Request, Response, NextFunction } from 'express';
 
-const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-  if (process.env.NODE_ENV === 'development') console.error(err);
+interface HttpError extends Error {
+  status?: number;
+}
 
-  return res.status(500).json({ message: 'Internal server error' });
+export const errorHandler = (
+  err: HttpError,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const status = err.status || 500;
+  const message = err.message || 'Internal Server Error';
+  res.status(status).send({
+    status,
+    message
+  });
 };
-
-export default errorHandler;

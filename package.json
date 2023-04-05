@@ -4,6 +4,8 @@
   "description": "Projeto para definição de score para time dev",
   "main": "app.js",
   "scripts": {
+    "start": "npm run build && node dist/app.js",
+  "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,10 +26,14 @@
   "dependencies": {
     "@nestjs/common": "^9.3.12",
     "@nestjs/core": "^9.3.12",
+    "@nestjs/mongoose": "^9.2.2",
+    "@nestjs/typeorm": "^9.0.1",
+    "bcryptjs": "^2.4.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.3",
     "nestjs": "^0.0.1",
-    "nodegit": "^0.27.0"
+    "nodegit": "^0.27.0",
+    "typeorm": "^0.3.12"
   }
 }

@@ -1,26 +1,33 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-import jwtconfig from '../../config/jwt';
-/**
- * authenticate.ts: middleware responsável por realizar a autenticação dos usuários, 
- * verificando se o token de autenticação está presente nos cabeçalhos da requisição e se ele é válido.
- */
-const authenticate = async (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization?.split(' ')[1];
+const authenticate = (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization;
 
-  try {
-    if (!token) throw new Error('Token not found');
-
-    const decoded = jwt.verify(token, jwtconfig.secret);
-
-    // adiciona o id do usuário na requisição
-    req.userId = decoded.id;
-
-    return next();
-  } catch (err) {
-    return res.status(401).json({ message: 'Unauthorized' });
+  if (!authHeader) {
+    return res.status(401).json({ message: 'Token não informado.' });
   }
+
+  const parts = authHeader.split(' ');
+
+  if (parts.length !== 2) {
+    return res.status(401).json({ message: 'Token inválido.' });
+  }
+
+  const [scheme, token] = parts;
+
+  if (!/^Bearer$/i.test(scheme)) {
+    return res.status(401).json({ message: 'Token mal formatado.' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Token inválido.' });
+    }
+
+    req.userId = decoded.sub;
+    return next();
+  });
 };
 
 export default authenticate;
