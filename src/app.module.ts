@@ -1,13 +1,24 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
-import { UserController } from './api/user/user.controllers';
-import { CommitController } from './api/commit/commit.controllers';
-import { UserService } from './api/user/user.services';
-import { CommitService } from './api/commit/commit.services';
+import { AppService } from './app.service';
+import { User } from './api/user/user.entity';
+import { UserRepository } from './api/user/user.repository';
+//import { UserRepository } from './api/user/user.repository';
 
 @Module({
-  imports: [],
-  controllers: [AppController, UserController, CommitController],
-  providers: [UserService, CommitService],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mongodb',
+      host: 'localhost',
+      port: 27017,
+      database: 'mydatabase',
+      entities: [User],
+      synchronize: true,
+    }),
+    TypeOrmModule.forFeature([UserRepository]),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
