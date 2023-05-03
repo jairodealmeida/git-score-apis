@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ICommit } from './commit.entity';
 import { CommitService } from './commit.service';
@@ -43,4 +44,37 @@ export class CommitController {
     const commits = this.commitService.getCommitsByAuthor(author, url);
     return commits;
   }
+  @Get('/commits/csv')
+  async downloadCommitsCsv(@Query() query: CommitRequest): Promise<any> {
+    const author = query.author;
+    const url = query.url;
+    const commits = await this.commitService.getCommitsByAuthor(author, url);
+
+    const csvData = this.convertToCsv(commits);
+    const fileName = `${author}_commits.csv`;
+
+    return {
+      headers: {
+        'Content-Type': 'text/csv',
+        'Content-Disposition': `attachment; filename=${fileName}`,
+      },
+      body: csvData,
+    };
+  }
+
+  convertToCsv(data: ICommit[]): string {
+    const replacer = (key, value) => (value === null ? '' : value); // handle null values
+    const header = Object.keys(data[0]);
+    const csv = [
+      header.join(','), // header row first
+      ...data.map((row) =>
+        header
+          .map((fieldName) => JSON.stringify(row[fieldName], replacer))
+          .join(','),
+      ),
+    ].join('\r');
+
+    return csv;
+  }
+  //create get method to downloaf cvs file based in getCommitsByAuthor metod from service
 }
