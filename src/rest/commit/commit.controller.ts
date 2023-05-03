@@ -64,17 +64,20 @@ export class CommitController {
 
   convertToCsv(data: ICommit[]): string {
     const replacer = (key, value) => (value === null ? '' : value); // handle null values
-    const header = Object.keys(data[0]);
-    const csv = [
-      header.join(','), // header row first
-      ...data.map((row) =>
-        header
-          .map((fieldName) => JSON.stringify(row[fieldName], replacer))
-          .join(','),
-      ),
-    ].join('\r');
-
-    return csv;
+    if (data !== null && data.length > 0) {
+      const header = Object.keys(data[0]);
+      const csv = [
+        header.join(','), // header row first
+        ...data.map((row) =>
+          header
+            .map((fieldName) => JSON.stringify(row[fieldName], replacer))
+            .join(','),
+        ),
+      ].join('\r');
+      return csv;
+    } else {
+      return 'Not have commits in period';
+    }
   }
   //create get method to downloaf cvs file based in getCommitsByAuthor metod from service
 }
