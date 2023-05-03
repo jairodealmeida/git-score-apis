@@ -23,7 +23,9 @@ class CommitRequest {
   @ApiProperty({ default: 'jairodealmeida' })
   author: string;
 
-  @ApiProperty({ default: '/home/jdealmeida/Projetos/git-score-apis' })
+  @ApiProperty({
+    default: 'https://github.com/jairodealmeida/git-score-apis.git',
+  })
   url: string;
 }
 
